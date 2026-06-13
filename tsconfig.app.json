@@ -4,7 +4,7 @@
     "target": "es2023",
     "lib": ["ES2023", "DOM"],
     "module": "esnext",
-    "types": ["vite/client"],
+    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"],
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -25,6 +25,20 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
+      "@/src/axios/*": ["./src/axios/*"],
+      "@/src/pages/*": ["./src/pages/*"],
+      "@/src/stores/*": ["./src/stores/*"],
+      "@/src/components/*": ["./src/components/*"],
+      "@/src/constants/*": ["./src/constants/*"],
+      "@/src/hooks/*": ["./src/hooks/*"],
+      "@/src/icons/*": ["./src/icons/*"],
+      "@/src/queries/*": ["./src/queries/*"],
+      "@/src/schema/*": ["./src/schema/*"],
+      "@/src/services/*": ["./src/services/*"],
+      "@/src/styles/*": ["./src/styles/*"],
+      "@/src/types/*": ["./src/types/*"],
+      "@/src/ui/*": ["./src/ui/*"],
+      "@/src/utils/*": ["./src/utils/*"],
       "@/*": ["./src/*"]
     }
   },

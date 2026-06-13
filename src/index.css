@@ -39,6 +39,23 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Brand palette — What To Eat */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-dark: var(--brand-primary-dark);
+  --color-brand-primary-light: var(--brand-primary-light);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-secondary-light: var(--brand-secondary-light);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-light: var(--brand-accent-light);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-text-secondary: var(--brand-text-secondary);
+  --color-brand-border: var(--brand-border);
+  --color-brand-bg: var(--brand-bg);
+  --color-success: var(--brand-success);
+  --color-warning: var(--brand-warning);
+  --color-error: var(--brand-error);
+  --color-info: var(--brand-info);
 }
 
 :root {
@@ -75,6 +92,23 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.141 0.005 285.823);
   --radius: 0.625rem;
+
+  /* Brand palette */
+  --brand-primary: #2e7d99;
+  --brand-primary-dark: #1f5a75;
+  --brand-primary-light: #4a9fb8;
+  --brand-secondary: #4cbfdb;
+  --brand-secondary-light: #7dd4e8;
+  --brand-accent: #6dd5db;
+  --brand-accent-light: #b8e9f0;
+  --brand-dark: #2c3e50;
+  --brand-text-secondary: #7f8c8d;
+  --brand-border: #e8f1f5;
+  --brand-bg: #f8fbfd;
+  --brand-success: #27ae60;
+  --brand-warning: #f39c12;
+  --brand-error: #e74c3c;
+  --brand-info: #3498db;
 }
 
 .dark {

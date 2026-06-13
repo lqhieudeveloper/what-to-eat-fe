@@ -8,6 +8,8 @@ import prettier from 'eslint-config-prettier'
 
 export default defineConfig([
   globalIgnores(['dist']),
+
+  // Main rules for all TS/TSX files
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -19,6 +21,30 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+    },
+    rules: {
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'never' }],
+    },
+  },
+
+  // Relax generated shadcn files — do not edit these manually
+  {
+    files: ['src/ui/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/consistent-type-assertions': 'off',
+      'react-refresh/only-export-components': 'off',
+      'react-hooks/purity': 'off',
+    },
+  },
+
+  // TanStack Router page files always export both Route + component — fast refresh warning is expected
+  {
+    files: ['src/pages/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
 ])

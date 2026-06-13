@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - What To Eat Today</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #f8fbfd 0%, #e8f1f5 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2c3e50;
+      }
+
+      .login-container {
+        width: 100%;
+        max-width: 420px;
+        padding: 40px;
+      }
+
+      .login-card {
+        background: white;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(46, 125, 153, 0.1);
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: #2e7d99;
+        margin-bottom: 12px;
+      }
+
+      .logo-text {
+        font-size: 14px;
+        color: #7f8c8d;
+        font-weight: 500;
+      }
+
+      .login-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        margin-top: 24px;
+        margin-bottom: 8px;
+        color: #2c3e50;
+      }
+
+      .login-subtitle {
+        font-size: 14px;
+        color: #7f8c8d;
+        margin-bottom: 32px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #2c3e50;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1.5px solid #e8f1f5;
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        background: #f8fbfd;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #2e7d99;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(46, 125, 153, 0.1);
+      }
+
+      input::placeholder {
+        color: #b0bec5;
+      }
+
+      .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .remember-me input[type='checkbox'] {
+        width: auto;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .forgot-password {
+        color: #2e7d99;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+
+      .forgot-password:hover {
+        color: #1f5a75;
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 14px;
+        background: #2e7d99;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+      }
+
+      .login-btn:hover {
+        background: #1f5a75;
+        box-shadow: 0 4px 12px rgba(46, 125, 153, 0.3);
+      }
+
+      .login-btn:active {
+        transform: translateY(1px);
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        margin: 24px 0;
+        gap: 12px;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #e8f1f5;
+      }
+
+      .divider-text {
+        font-size: 12px;
+        color: #7f8c8d;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .social-login {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .social-btn {
+        padding: 12px;
+        border: 1.5px solid #e8f1f5;
+        background: white;
+        border-radius: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #2c3e50;
+      }
+
+      .social-btn:hover {
+        border-color: #2e7d99;
+        background: #f8fbfd;
+      }
+
+      .social-icon {
+        font-size: 18px;
+      }
+
+      .signup-link {
+        text-align: center;
+        font-size: 14px;
+        color: #7f8c8d;
+      }
+
+      .signup-link a {
+        color: #2e7d99;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+      }
+
+      .signup-link a:hover {
+        color: #1f5a75;
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .login-container {
+          padding: 20px;
+        }
+
+        .login-card {
+          padding: 24px;
+        }
+
+        .login-title {
+          font-size: 24px;
+        }
+
+        .social-login {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <!-- Header -->
+        <div class="login-header">
+          <div class="logo">🍽️</div>
+          <div class="logo-text">WHAT TO EAT TODAY</div>
+        </div>
+
+        <!-- Title -->
+        <div class="login-title">Welcome Back</div>
+        <p class="login-subtitle">Sign in to your account to continue</p>
+
+        <!-- Login Form -->
+        <form>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="your@email.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="••••••••" required />
+          </div>
+
+          <div class="remember-forgot">
+            <label class="remember-me">
+              <input type="checkbox" name="remember" />
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="forgot-password">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="login-btn">Sign In</button>
+        </form>
+
+        <!-- Divider -->
+        <div class="divider">
+          <span class="divider-text">Or continue with</span>
+        </div>
+
+        <!-- Social Login -->
+        <div class="social-login">
+          <button class="social-btn" type="button">
+            <span class="social-icon">🔵</span>
+            <span>Google</span>
+          </button>
+          <button class="social-btn" type="button">
+            <span class="social-icon">📘</span>
+            <span>Facebook</span>
+          </button>
+        </div>
+
+        <!-- Sign Up Link -->
+        <div class="signup-link">Don't have an account? <a href="#">Sign up here</a></div>
+      </div>
+    </div>
+  </body>
+</html>

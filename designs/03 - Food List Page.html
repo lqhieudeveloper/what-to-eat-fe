@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food List - What To Eat Today</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: #f8fbfd;
+        color: #2c3e50;
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background: #2e7d99;
+        color: white;
+        padding: 24px 16px;
+        position: sticky;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        flex-shrink: 0;
+        overflow-y: auto;
+      }
+
+      .sidebar-logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 32px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .sidebar-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .sidebar-item {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .sidebar-item:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .sidebar-item.active {
+        background: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+      }
+
+      .sidebar-item-icon {
+        font-size: 18px;
+      }
+
+      .sidebar-section {
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar-section-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #7f8c8d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        padding: 0 16px;
+      }
+
+      /* Main Content */
+      .main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .navbar {
+        background: white;
+        border-bottom: 1px solid #e8f1f5;
+        padding: 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2e7d99, #4cbfdb);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .navbar-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #2e7d99;
+      }
+
+      .content {
+        padding: 32px;
+        width: 100%;
+      }
+
+      /* Controls Bar */
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 24px;
+        flex-wrap: nowrap;
+      }
+
+      .search-box {
+        flex: 1;
+        min-width: 200px;
+        padding: 10px 14px;
+        border: 1.5px solid #e8f1f5;
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        background: #f8fbfd;
+      }
+
+      .search-box:focus {
+        outline: none;
+        border-color: #2e7d99;
+        box-shadow: 0 0 0 3px rgba(46, 125, 153, 0.1);
+        background: white;
+      }
+
+      .filter-group {
+        display: flex;
+        gap: 12px;
+      }
+
+      select {
+        padding: 10px 12px;
+        border: 1.5px solid #e8f1f5;
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      select:focus {
+        outline: none;
+        border-color: #2e7d99;
+        background: white;
+      }
+
+      button {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary {
+        background: #2e7d99;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #1f5a75;
+      }
+
+      /* Food Grid */
+      .food-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        margin-bottom: 40px;
+      }
+
+      .food-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(46, 125, 153, 0.08);
+        transition: all 0.3s ease;
+        position: relative;
+        flex: 1;
+        min-width: 220px;
+        max-width: 240px;
+      }
+
+      .food-card:hover {
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        transform: translateY(-8px);
+      }
+
+      .food-image {
+        width: 100%;
+        height: 180px;
+        background: linear-gradient(135deg, #b8e9f0 0%, #7dd4e8 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 64px;
+        position: relative;
+      }
+
+      .favorite-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: white;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+      }
+
+      .favorite-btn:hover {
+        transform: scale(1.1);
+        background: #4cbfdb;
+        color: white;
+      }
+
+      .favorite-btn.active {
+        background: #2e7d99;
+        color: white;
+      }
+
+      .food-info {
+        padding: 16px;
+      }
+
+      .food-name {
+        font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 4px;
+        color: #2c3e50;
+      }
+
+      .food-category {
+        font-size: 13px;
+        color: #7f8c8d;
+        margin-bottom: 12px;
+      }
+
+      .food-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #2e7d99;
+        font-weight: 600;
+      }
+
+      /* Tags */
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e8f1f5;
+      }
+
+      .tag {
+        font-size: 12px;
+        background: #b8e9f0;
+        color: #2e7d99;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+
+      /* Pagination */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 40px 0;
+      }
+
+      .pagination button {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1.5px solid #e8f1f5;
+        background: white;
+        color: #2c3e50;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      .pagination button:hover {
+        border-color: #2e7d99;
+        color: #2e7d99;
+      }
+
+      .pagination button.active {
+        background: #2e7d99;
+        color: white;
+        border-color: #2e7d99;
+      }
+
+      .pagination button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          position: relative;
+          width: 100%;
+          height: auto;
+          padding: 16px;
+          border-bottom: 1px solid #e8f1f5;
+        }
+
+        .main {
+          min-width: unset;
+        }
+
+        .content {
+          padding: 16px;
+        }
+
+        .controls {
+          grid-template-columns: 1fr;
+        }
+
+        .food-grid {
+          grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+          gap: 16px;
+        }
+
+        .navbar {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-logo">🍽️ WTET</div>
+        <div class="sidebar-menu">
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">📊</span>
+            <span>Dashboard</span>
+          </div>
+          <div class="sidebar-item active">
+            <span class="sidebar-item-icon">🍽️</span>
+            <span>Food List</span>
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">✨</span>
+            <span>AI Suggestion</span>
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">❤️</span>
+            <span>Favorites</span>
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">📅</span>
+            <span>Meal History</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">Account</div>
+          <div class="sidebar-menu">
+            <div class="sidebar-item">
+              <span class="sidebar-item-icon">👤</span>
+              <span>Profile</span>
+            </div>
+            <div class="sidebar-item">
+              <span class="sidebar-item-icon">⚙️</span>
+              <span>Settings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main">
+        <!-- Navbar -->
+        <div class="navbar">
+          <div class="navbar-title">Food List</div>
+          <div class="navbar-actions">
+            <div class="avatar">JD</div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+          <!-- Controls -->
+          <div class="controls">
+            <input type="text" class="search-box" placeholder="🔍 Search foods..." />
+            <div class="filter-group">
+              <select>
+                <option>All Categories</option>
+                <option>Vietnamese</option>
+                <option>Italian</option>
+                <option>Japanese</option>
+                <option>American</option>
+              </select>
+              <select>
+                <option>Sort By: Rating</option>
+                <option>Newest</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Food Grid -->
+          <div class="food-grid">
+            <!-- Pizza Card -->
+            <div class="food-card">
+              <div class="food-image">
+                🍕
+                <button class="favorite-btn">🤍</button>
+              </div>
+              <div class="food-info">
+                <div class="food-name">Pizza Margherita</div>
+                <div class="food-category">Italian</div>
+                <div class="food-meta">
+                  <span>⭐ 4.5</span>
+                  <span>320 cal</span>
+                </div>
+                <div class="tags">
+                  <span class="tag">Cheese</span>
+                  <span class="tag">Tomato</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phở Card -->
+            <div class="food-card">
+              <div class="food-image">
+                🍜
+                <button class="favorite-btn active">❤️</button>
+              </div>
+              <div class="food-info">
+                <div class="food-name">Phở Tái</div>
+                <div class="food-category">Vietnamese</div>
+                <div class="food-meta">
+                  <span>⭐ 4.8</span>
+                  <span>280 cal</span>
+                </div>
+                <div class="tags">
+                  <span class="tag">Soup</span>
+                  <span class="tag">Beef</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sushi Card -->
+            <div class="food-card">
+              <div class="food-image">
+                🍣
+                <button class="favorite-btn">🤍</button>
+              </div>
+              <div class="food-info">
+                <div class="food-name">Sushi Platter</div>
+                <div class="food-category">Japanese</div>
+                <div class="food-meta">
+                  <span>⭐ 4.9</span>
+                  <span>250 cal</span>
+                </div>
+                <div class="tags">
+                  <span class="tag">Fish</span>
+                  <span class="tag">Rice</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Burger Card -->
+            <div class="food-card">
+              <div class="food-image">
+                🍔
+                <button class="favorite-btn">🤍</button>
+              </div>
+              <div class="food-info">
+                <div class="food-name">Burger Deluxe</div>
+                <div class="food-category">American</div>
+                <div class="food-meta">
+                  <span>⭐ 4.3</span>
+                  <span>520 cal</span>
+                </div>
+                <div class="tags">
+                  <span class="tag">Beef</span>
+                  <span class="tag">Cheese</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Salad Card -->
+            <div class="food-card">
+              <div class="food-image">
+                🥗
+                <button class="favorite-btn active">❤️</button>
+              </div>
+              <div class="food-info">
+                <div class="food-name">Caesar Salad</div>
+                <div class="food-category">Healthy</div>
+                <div class="food-meta">
+                  <span>⭐ 4.6</span>
+                  <span>250 cal</span>
+                </div>
+                <div class="tags">
+                  <span class="tag">Vegetarian</span>
+                  <span class="tag">Healthy</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tacos Card -->
+            <div class="food-card">
+              <div class="food-image">
+                🌮
+                <button class="favorite-btn">🤍</button>
+              </div>
+              <div class="food-info">
+                <div class="food-name">Tacos Carnitas</div>
+                <div class="food-category">Mexican</div>
+                <div class="food-meta">
+                  <span>⭐ 4.4</span>
+                  <span>380 cal</span>
+                </div>
+                <div class="tags">
+                  <span class="tag">Pork</span>
+                  <span class="tag">Spicy</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pasta Card -->
+            <div class="food-card">
+              <div class="food-image">
+                🍝
+                <button class="favorite-btn">🤍</button>
+              </div>
+              <div class="food-info">
+                <div class="food-name">Spaghetti Carbonara</div>
+                <div class="food-category">Italian</div>
+                <div class="food-meta">
+                  <span>⭐ 4.7</span>
+                  <span>450 cal</span>
+                </div>
+                <div class="tags">
+                  <span class="tag">Pasta</span>
+                  <span class="tag">Cream</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ramen Card -->
+            <div class="food-card">
+              <div class="food-image">
+                🍲
+                <button class="favorite-btn">🤍</button>
+              </div>
+              <div class="food-info">
+                <div class="food-name">Tonkotsu Ramen</div>
+                <div class="food-category">Japanese</div>
+                <div class="food-meta">
+                  <span>⭐ 4.8</span>
+                  <span>420 cal</span>
+                </div>
+                <div class="tags">
+                  <span class="tag">Noodles</span>
+                  <span class="tag">Pork</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination">
+            <button>← Prev</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
