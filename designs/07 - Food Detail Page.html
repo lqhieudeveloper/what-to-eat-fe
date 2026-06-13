@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phở Tái - What To Eat Today</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: #f8fbfd;
+        color: #2c3e50;
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background: #2e7d99;
+        color: white;
+        padding: 24px 16px;
+        position: sticky;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        flex-shrink: 0;
+        overflow-y: auto;
+      }
+
+      .sidebar-logo {
+        font-family: 'Poppins', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 32px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .sidebar-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .sidebar-item {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .sidebar-item:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .sidebar-item.active {
+        background: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+      }
+
+      .sidebar-item-icon {
+        font-size: 18px;
+      }
+
+      /* Main Content */
+      .main {
+        flex: 1;
+        min-width: 0;
+        overflow-y: auto;
+      }
+
+      .navbar {
+        background: white;
+        border-bottom: 1px solid #e8f1f5;
+        padding: 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2e7d99, #4cbfdb);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .navbar-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: #2e7d99;
+      }
+
+      .content {
+        padding: 32px;
+        max-width: 760px;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(135deg, #b8e9f0 0%, #7dd4e8 100%);
+        border-radius: 12px;
+        padding: 60px;
+        text-align: center;
+        margin-bottom: 32px;
+        font-size: 120px;
+      }
+
+      /* Details Card */
+      .details-card {
+        background: white;
+        border-radius: 12px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .details-header {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #e8f1f5;
+      }
+
+      .details-title {
+        flex: 1;
+      }
+
+      .food-name {
+        font-family: 'Poppins', sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: #2e7d99;
+        margin-bottom: 8px;
+      }
+
+      .food-category {
+        font-size: 16px;
+        color: #7f8c8d;
+        margin-bottom: 16px;
+      }
+
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #2e7d99;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 12px;
+        width: 100%;
+      }
+
+      button {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+      }
+
+      .btn-primary {
+        background: #2e7d99;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #1f5a75;
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: #2e7d99;
+        border: 1.5px solid #2e7d99;
+      }
+
+      .btn-outline:hover {
+        background: rgba(216, 67, 21, 0.1);
+      }
+
+      /* Info Grid */
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .info-item {
+        text-align: center;
+      }
+
+      .info-value {
+        font-family: 'Poppins', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #2e7d99;
+        margin-bottom: 8px;
+      }
+
+      .info-label {
+        font-size: 13px;
+        color: #7f8c8d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Section */
+      .section {
+        margin-bottom: 32px;
+      }
+
+      .section-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #2c3e50;
+      }
+
+      .section-content {
+        font-size: 15px;
+        color: #7f8c8d;
+        line-height: 1.8;
+      }
+
+      /* Tags */
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        background: #b8e9f0;
+        color: #2e7d99;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      /* Nutrition */
+      .nutrition-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 16px;
+      }
+
+      .nutrition-item {
+        background: #f8fbfd;
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid #e8f1f5;
+      }
+
+      .nutrition-value {
+        font-family: 'Poppins', sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #2e7d99;
+        margin-bottom: 4px;
+      }
+
+      .nutrition-label {
+        font-size: 12px;
+        color: #7f8c8d;
+      }
+
+      /* Reviews Section */
+      .review {
+        background: #f8fbfd;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #e8f1f5;
+      }
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .review-author {
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .review-rating {
+        color: #2e7d99;
+        font-weight: 600;
+      }
+
+      .review-text {
+        font-size: 14px;
+        color: #7f8c8d;
+        line-height: 1.6;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          position: relative;
+          width: 100%;
+          height: auto;
+          padding: 16px;
+          border-bottom: 1px solid #e8f1f5;
+        }
+
+        .main {
+          min-width: unset;
+        }
+
+        .content {
+          padding: 16px;
+        }
+
+        .details-header {
+          flex-direction: column;
+        }
+
+        .action-buttons {
+          width: 100%;
+          flex-direction: row;
+        }
+
+        .action-buttons button {
+          flex: 1;
+        }
+
+        .navbar {
+          padding: 16px;
+        }
+
+        .hero {
+          padding: 40px;
+          font-size: 80px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-logo">🍽️ WTET</div>
+        <div class="sidebar-menu">
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">📊</span>
+            <span>Dashboard</span>
+          </div>
+          <div class="sidebar-item active">
+            <span class="sidebar-item-icon">🍽️</span>
+            <span>Food List</span>
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">✨</span>
+            <span>AI Suggestion</span>
+          </div>
+          <div class="sidebar-item">
+            <span class="sidebar-item-icon">❤️</span>
+            <span>Favorites</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main">
+        <!-- Navbar -->
+        <div class="navbar">
+          <div class="navbar-title">← Food Details</div>
+          <div class="navbar-actions">
+            <div class="avatar">JD</div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+          <!-- Hero Image -->
+          <div class="hero">🍜</div>
+
+          <!-- Details Card -->
+          <div class="details-card">
+            <div class="details-header">
+              <div class="details-title">
+                <div class="food-name">Phở Tái</div>
+                <div class="food-category">Vietnamese Cuisine</div>
+                <div class="rating">⭐ 4.8 (512 reviews)</div>
+              </div>
+              <div class="action-buttons">
+                <button class="btn-primary">❤️ Save to Favorites</button>
+                <button class="btn-outline">Share</button>
+              </div>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-value">280</div>
+                <div class="info-label">Calories</div>
+              </div>
+              <div class="info-item">
+                <div class="info-value">$8</div>
+                <div class="info-label">Price</div>
+              </div>
+              <div class="info-item">
+                <div class="info-value">45m</div>
+                <div class="info-label">Prep Time</div>
+              </div>
+              <div class="info-item">
+                <div class="info-value">4/5</div>
+                <div class="info-label">Difficulty</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="details-card">
+            <div class="section">
+              <div class="section-title">About</div>
+              <div class="section-content">
+                Phở Tái is a traditional Vietnamese soup made with aromatic beef broth, fresh rice
+                noodles, and thin slices of rare beef that cook in the hot broth. It's a beloved
+                comfort food that's light yet satisfying, perfect for any time of day. The complex
+                broth flavor comes from slow-cooked beef bones, star anise, cinnamon, and other
+                spices.
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-title">Tags</div>
+              <div class="tags">
+                <span class="tag">Soup</span>
+                <span class="tag">Beef</span>
+                <span class="tag">Light</span>
+                <span class="tag">Vietnamese</span>
+                <span class="tag">Gluten-free</span>
+                <span class="tag">Healthy</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nutrition Facts -->
+          <div class="details-card">
+            <div class="section-title">Nutrition Facts</div>
+            <div class="nutrition-grid">
+              <div class="nutrition-item">
+                <div class="nutrition-value">280 kcal</div>
+                <div class="nutrition-label">Calories</div>
+              </div>
+              <div class="nutrition-item">
+                <div class="nutrition-value">12g</div>
+                <div class="nutrition-label">Protein</div>
+              </div>
+              <div class="nutrition-item">
+                <div class="nutrition-value">3g</div>
+                <div class="nutrition-label">Fat</div>
+              </div>
+              <div class="nutrition-item">
+                <div class="nutrition-value">45g</div>
+                <div class="nutrition-label">Carbs</div>
+              </div>
+              <div class="nutrition-item">
+                <div class="nutrition-value">2g</div>
+                <div class="nutrition-label">Fiber</div>
+              </div>
+              <div class="nutrition-item">
+                <div class="nutrition-value">1g</div>
+                <div class="nutrition-label">Sugar</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews -->
+          <div class="details-card">
+            <div class="section-title">Customer Reviews (512)</div>
+
+            <div class="review">
+              <div class="review-header">
+                <div class="review-author">Sarah M.</div>
+                <div class="review-rating">⭐⭐⭐⭐⭐</div>
+              </div>
+              <div class="review-text">
+                "Absolutely delicious! The broth is so flavorful and the beef is perfectly tender.
+                This is my go-to comfort food. Highly recommended!"
+              </div>
+            </div>
+
+            <div class="review">
+              <div class="review-header">
+                <div class="review-author">Mike T.</div>
+                <div class="review-rating">⭐⭐⭐⭐</div>
+              </div>
+              <div class="review-text">
+                "Great authentic Vietnamese phở. The flavors are authentic and the portions are
+                generous. Would definitely order again."
+              </div>
+            </div>
+
+            <div class="review">
+              <div class="review-header">
+                <div class="review-author">Lisa K.</div>
+                <div class="review-rating">⭐⭐⭐⭐⭐</div>
+              </div>
+              <div class="review-text">
+                "Perfect for a rainy day! Warm, comforting, and packed with flavor. I make this at
+                home at least once a week."
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Review -->
+          <div class="details-card">
+            <div class="section-title">Add Your Review</div>
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <div>
+                <label style="display: block; font-weight: 600; margin-bottom: 8px">Rating</label>
+                <select
+                  style="
+                    width: 100%;
+                    padding: 10px 12px;
+                    border: 1.5px solid #e8f1f5;
+                    border-radius: 8px;
+                    font-size: 14px;
+                  "
+                >
+                  <option>Select rating...</option>
+                  <option>⭐⭐⭐⭐⭐ Excellent</option>
+                  <option>⭐⭐⭐⭐ Good</option>
+                  <option>⭐⭐⭐ Average</option>
+                  <option>⭐⭐ Below Average</option>
+                  <option>⭐ Poor</option>
+                </select>
+              </div>
+              <div>
+                <label style="display: block; font-weight: 600; margin-bottom: 8px"
+                  >Your Review</label
+                >
+                <textarea
+                  style="
+                    width: 100%;
+                    padding: 12px 16px;
+                    border: 1.5px solid #e8f1f5;
+                    border-radius: 8px;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 14px;
+                    resize: vertical;
+                  "
+                  placeholder="Share your experience with this food..."
+                  rows="4"
+                ></textarea>
+              </div>
+              <button class="btn-primary">Post Review</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
