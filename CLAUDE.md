@@ -270,17 +270,35 @@ When adding a new page, also create the route file in `src/pages/`. Use `/add-pa
 - `/code-review` — review current diff for bugs and improvements
 - `/code-review ultra` — deep multi-agent review (costs more credits, use for PRs)
 
+### Built-in Skills
+
+| Skill                | When to use                                                         |
+| -------------------- | ------------------------------------------------------------------- |
+| `/run`               | Launch the app and confirm a feature works in the browser           |
+| `/verify`            | Confirm a specific change behaves correctly                         |
+| `/simplify`          | Cleanup and simplify code after implementation (does not hunt bugs) |
+| `/security-review`   | Security audit before merging an important PR                       |
+| `/code-review`       | Review the current diff for bugs and improvements                   |
+| `/code-review ultra` | Deep multi-agent review for large PRs (costs more credits)          |
+
+### Anti-patterns
+
+See `.claude/ANTI_PATTERNS.md` for the full list of things to never do in this codebase.
+
+### Memory Guidelines
+
+See `.claude/MEMORY_GUIDELINES.md` for how to save and manage persistent memory across conversations.
+
 ### Styling
 
-- **Always** use Tailwind utility classes. Never use inline styles (`style={{}}`).
-- Use semantic token classes where possible: `bg-background`, `text-foreground`, `border-border`.
+- Use semantic token classes: `bg-background`, `text-foreground`, `border-border`.
 - Brand colors: `bg-brand-primary`, `text-brand-secondary`, `bg-success`, etc.
 - Dark mode via `.dark` class (`@custom-variant dark (&:is(.dark *))`).
 - Use `cn()` from `@/utils/utils` to merge conditional classes.
 
 ### UI Components
 
-Always reuse components from `src/ui/` (shadcn primitives). If the needed component is not in `src/ui/`, **stop and ask** to install it from shadcn before building a custom one.
+All UI primitives come from `src/ui/` (shadcn). Add new ones via `/add-shadcn`.
 
 ### Forms
 
@@ -296,17 +314,6 @@ type FoodFormValues = z.infer<typeof foodSchema>
 
 const form = useForm<FoodFormValues>({ resolver: zodResolver(foodSchema) })
 ```
-
-### ESLint Rules
-
-- `no-console` — `console.log` is an error; `console.warn` / `console.error` are allowed.
-- `@typescript-eslint/consistent-type-definitions` — always use `type`, never `interface`.
-- `@typescript-eslint/consistent-type-assertions` — no `as` type assertions (except `src/ui/` which is exempt as generated code).
-
-### TypeScript Rules
-
-- Always use `type` keyword, never `interface`.
-- Never use `as` for type assertions — use type guards or proper generic types instead.
 
 ### Unit Tests
 
